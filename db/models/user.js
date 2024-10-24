@@ -1,7 +1,7 @@
 'use strict';
 const { Sequelize } = require('sequelize');
-const db = require('../config/database');
-module.exports = db.afterDefine('user',{
+const db = require('../../config/database');
+module.exports = db.define('user', {
   id: {
     allowNull: false,
     autoIncrement: true,
@@ -9,7 +9,7 @@ module.exports = db.afterDefine('user',{
     type: Sequelize.INTEGER
   },
   userType: {
-    type: Sequelize.ENUM('0','1','2')
+    type: Sequelize.ENUM('0', '1', '2')
   },
   firstName: {
     type: Sequelize.STRING
@@ -23,6 +23,9 @@ module.exports = db.afterDefine('user',{
   password: {
     type: Sequelize.STRING
   },
+  confirmPassword: {
+    type: Sequelize.STRING
+  },
   createdAt: {
     allowNull: false,
     type: Sequelize.DATE
@@ -31,11 +34,11 @@ module.exports = db.afterDefine('user',{
     allowNull: false,
     type: Sequelize.DATE
   },
-  deletedAt:{
+  deletedAt: {
     type: Sequelize.DATE
   }
-},{
-  freezeTableName:true,
-  paranoid : true,
-  modelName : 'user'
+}, {
+  freezeTableName: true,
+  paranoid: true,
+  modelName: 'user'
 })

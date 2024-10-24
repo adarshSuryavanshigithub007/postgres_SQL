@@ -1,10 +1,9 @@
-const {sequelize} = require('sequelize')
+const { Sequelize } = require('sequelize'); // Changed to 'Sequelize' to avoid conflict
 
+const env = process.env.NODE_ENV || 'development';
 
-const env = process.env.NODE_ENV || 'development'
+const config = require('./config'); // Make sure the path to your config is correct
 
-const config = require('../config')
+const sequelize = new Sequelize(config[env]); // Use 'Sequelize' here to create a new instance
 
-const sequelize = new sequelize(config[env])
-
-module.exports
+module.exports = sequelize; // Fixed typo: changed 'Exports' to 'exports'

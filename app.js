@@ -4,6 +4,9 @@ const authRouter = require('./routes/authRoute')
 const dotenv = require('dotenv')
 
 dotenv.config()
+
+app.use(express.json())
+
 app.get('/', (req, res) => {
     res.status(200).json({
         status: 'success',
