@@ -2,45 +2,48 @@ const { where } = require("sequelize")
 const user = require("../db/models/user")
 const bcrypt = require("bcrypt")
 const jwt = require('jsonwebtoken')
+const catchAsync = require("../utils/catchAsync")
+const AppError = require("../utils/appError")
 
-const SignUp = async (req, res, next) => {
+const SignUp = catchAsync(async (req, res, next) => {
     try {
         const isUserexist = await user.findOne({ where: { email: req.body.email } })
-        // console.log("rtttttttttt",isUserexist)
-        if (isUserexist) {
-            return res.status(400).json({ message: "User already exist" })
+        if (!['1', '2'].includes(req.body.userType)) {
+            return next(new AppError('Invalid User Type', 400))
         }
+        if (isUserexist) {
+            return next(new AppError('User already exist', 400))
+        }
+
         const { password, confirmPassword } = req.body
         if (password !== confirmPassword) {
-            return res.status(400).json({
-                message: "Password does not match"
-            })
+            return next(new AppError('Password does not match', 400))
         }
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(password, salt);
         req.body.password = hashedPassword;
         req.body.confirmPassword = hashedPassword;
         const newUser = await user.create(req.body);
-        return res.status(201).json({ message: "User created successfully", data: newUser });
+        next(new AppError('User created successfully', 201))
     } catch (error) {
-        console.log(error)
+        next(error)
     }
-}
+})
 
-const SignIn = async (req, res, next) => {
+const SignIn = catchAsync(async (req, res, next) => {
     try {
         const { email, password } = req.body
         if (!email || !password) {
-            return res.status(400).json({ message: "Email and password are required" })
+            return next(new AppError('Email and password are required', 400))
         }
 
         const existUser = await user.findOne({ where: { email } })
         if (!existUser) {
-            res.status(400).json({ message: "User not found" })
+            return next(new AppError('User not found', 400))
         }
         const isMatch = await bcrypt.compare(password, existUser.password)
         if (!isMatch) {
-            res.status(400).json({ message: "Invalid password" })
+            return next(new AppError('Invalid password', 400))
         }
         const token = jwt.sign({ id: user.id }, process.env.SECRET_KEY, { expiresIn: '1d' })
         return res.status(201).json({
@@ -49,8 +52,8 @@ const SignIn = async (req, res, next) => {
             status: true
         })
     } catch (error) {
-        console.log(error)
+        next(error)
     }
-}
+})
 
 module.exports = { SignUp, SignIn }
