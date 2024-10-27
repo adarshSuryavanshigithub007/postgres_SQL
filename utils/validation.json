@@ -1,0 +1,60 @@
+{
+    "validateAuthRegister": [
+        {
+            "field": "firstName",
+            "required": true,
+            "type": "string",
+            "errorMessage": "firstName cannot be empty."
+        },
+        {
+            "field": "lastName",
+            "required": true,
+            "type": "string",
+            "errorMessage": "lastName canot be empty."
+        },
+        {
+            "field": "email",
+            "required": true,
+            "type": "string",
+            "regex": "^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$",
+            "errorMessage": "Please enter a valid email address."
+        },
+        {
+            "field": "password",
+            "required": true,
+            "type": "string",
+            "minLength": 8,
+            "errorMessage": "Password must be at least 8 characters long."
+        },
+        {
+            "field": "confirmPassword",
+            "required": true,
+            "type": "string",
+            "minLength": 8,
+            "errorMessage": "ConfirmPassword must be match with password"
+        }
+    ],
+    "validateAuthLogin": [
+        {
+            "field": "email",
+            "required": true,
+            "type": "string",
+            "regex": "^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$",
+            "errorMessage": "Please enter a valid email address."
+        },
+        {
+            "field": "password",
+            "required": true,
+            "type": "string",
+            "minLength": 8,
+            "errorMessage": "Password must be at least 8 characters long."
+        },
+        {
+            "field": "confirmPassword",
+            "required": true,
+            "type": "string",
+            "minLength": 8,
+            "errorMessage": "ConfirmPassword must be match with password"
+        }
+    ]
+}
