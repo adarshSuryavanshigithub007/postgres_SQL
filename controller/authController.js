@@ -1,10 +1,8 @@
-const { where } = require("sequelize")
 const user = require("../db/models/user")
 const bcrypt = require("bcrypt")
 const jwt = require('jsonwebtoken')
-const catchAsync = require("../utils/catchAsync")
-const AppError = require("../utils/appError")
 const { sendResponse } = require("../utils/service/responseService")
+const usertoken = require("../db/models/usertoken")
 
 const SignUp = async (req, res, next) => {
     try {
@@ -74,7 +72,18 @@ const SignIn = async (req, res, next) => {
             email: existUser.email,
             userType: existUser.userType,
         }
-        const token = jwt.sign({ id: user.id }, process.env.SECRET_KEY, { expiresIn: '1d' })
+        const token = jwt.sign({ id: user.id }, process.env.SECRET_KEY, { expiresIn: process.env.TOKEN_EXP })
+
+        // clc exp token 
+        const expireAt = new Date();
+        expireAt.setHours(expireAt.getHours() + parseInt(process.env.TOKEN_EXP))
+            console.log("dat3333333",expireAt)
+        await usertoken.create({
+            user_id : existUser.id,
+            token:token,
+            expire_at : expireAt
+        })
+
         return sendResponse(res, 201, true, 'User logged in successfully', {
             user: userWithOutPassword,
             token: token,

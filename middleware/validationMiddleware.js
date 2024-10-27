@@ -19,7 +19,6 @@ const validate = (validation)=>{
             console.log("acc-----------",acc)
             return acc
         },{})
-
         res.status(400).json({
             error:formattedError,
             message:"The given data was invalid"
