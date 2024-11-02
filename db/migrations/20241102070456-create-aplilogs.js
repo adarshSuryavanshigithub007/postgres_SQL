@@ -1,7 +1,8 @@
 'use strict';
-const db = require('../../db/models/apilogs')
-const { Sequelize} = require('sequelize')
-module.exports = db.define('apiLog', {
+/** @type {import('sequelize-cli').Migration} */
+module.exports = {
+  async up(queryInterface, Sequelize) {
+    await queryInterface.createTable('aplilogs', {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -24,10 +25,11 @@ module.exports = db.define('apiLog', {
         type: Sequelize.STRING
       },
       response: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING(1000),
+        
       },
       timestamp: {
-        type: Sequelize.STRING
+        type: Sequelize.DATE
       },
       createdAt: {
         allowNull: false,
@@ -37,4 +39,9 @@ module.exports = db.define('apiLog', {
         allowNull: false,
         type: Sequelize.DATE
       }
-    })
+    });
+  },
+  async down(queryInterface, Sequelize) {
+    await queryInterface.dropTable('aplilogs');
+  }
+};

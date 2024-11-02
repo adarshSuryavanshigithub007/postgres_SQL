@@ -1,6 +1,6 @@
 const { check } = require("express-validator");
 const { validate } = require("../../middleware/validationMiddleware");
-const config = require('../validation.json');
+const config = require('./validation.json');
 
 const validateAuthRegister = config.validateAuthRegister.map(rule => {
     switch (rule.field) {
