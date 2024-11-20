@@ -1,5 +1,6 @@
 const express = require('express')
 const authRouter = require('./routes/authRoute')
+const projectRouter = require('./routes/projectRoute')
 const dotenv = require('dotenv');
 const AppError = require('./utils/appError');
 const globalErrorHandler = require('./controller/errorController');
@@ -34,6 +35,7 @@ if (cluster.isPrimary) {
     })
     app.use(express.json())
     app.use('/api/v1/auth', authRouter)
+    app.use('/api/v1/project', projectRouter)
     app.use('*', (req, res, next) => {
         throw new AppError(`cont't fing ${req.originalUrl} on this server`, 404)
     })

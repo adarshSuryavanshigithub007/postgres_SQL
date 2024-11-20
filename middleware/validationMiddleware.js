@@ -1,30 +1,36 @@
 const { validationResult } = require("express-validator");
 
-const validate = (validation)=>{
-    console.log("validation^^^^^^^^^^^",validation)
-    return async (req,res,next)=>{
+const validate = (validation) => {
+    console.log("validation-=========",validation)
+    return async (req, res, next) => {
         try {
-            await Promise.all(validation.map((validation)=> validation.run(req)));
+            // Run all validation rules
+            await Promise.all(validation.map((validation) => validation.run(req)));
         } catch (err) {
             console.error(`Validation error: ${err.message}`);
             return res.status(500).json({ error: "Internal Server Error" });
         }
-        const error = validationResult(req)
-        console.log("455555555",error)
-        if(error.isEmpty()){
-            return next()
+
+        // Get validation results
+        const errors = validationResult(req);
+console.log("errors--------------",errors)
+        if (errors.isEmpty()) {
+            return next();
         }
-        const formattedError = error.array().reduce((acc,error)=>{
-            acc[error.path] = error.msg
-            console.log("acc-----------",acc)
-            return acc
-        },{})
+
+        // Format and return errors if any
+        const formattedError = errors.array().reduce((acc, error) => {
+            acc[error.param] = error.msg;  // Use `param` for field name
+            return acc;
+        }, {});
+
         res.status(400).json({
-            error:formattedError,
-            message:"The given data was invalid"
-        })
-    }
-}
+            error: formattedError,
+            message: "The given data was invalid",
+        });
+    };
+};
+
 
 module.exports = {
     validate

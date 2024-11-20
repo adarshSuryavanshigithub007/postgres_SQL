@@ -56,5 +56,44 @@
             "minLength": 8,
             "errorMessage": "ConfirmPassword must be match with password"
         }
+    ],
+    "projectValidtaion":[
+        {
+            "field": "title",
+            "required": true,
+            "type": "string",
+            "errorMessage":"title canot be empty"
+        },
+        {
+            "field": "isFeature",
+            "required": true,
+            "type": "boolean",
+            "errorMessage": "isFeature canot be empty must be true or false"
+        },
+        {
+            "field":"productImage",
+            "required": true,
+            "type": "string",
+            "errorMessage": "productImage canot be empty"
+        },
+        {
+            "field":"price",
+            "required": true,
+            "type":"decimal",
+            "errorMessage": "price canot be empty must be decimal"
+        },
+        {
+            "field":"shortDescription",
+            "required": true,
+            "type": "string",
+            "errorMessage": "shortDescription canot be empty must be 200 line char."
+        },
+        {
+            "field":"productUrl",
+            "required": true,
+            "type": "string",
+            "errorMessage": "productUrl canot be empty"
+        }
+
     ]
 }

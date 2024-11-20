@@ -10,7 +10,7 @@ const validateAuthRegister = config.validateAuthRegister.map(rule => {
                 .not()
                 .isEmpty()
                 .withMessage(rule.errorMessage)
-        
+
         case 'email':
             return check(rule.field)
                 .isEmail()
@@ -42,13 +42,50 @@ const validateAuthLogin = config.validateAuthLogin.map(rule => {
             return null; // Return null for unmatched cases
     }
 }).filter(Boolean); // Remove any null entries
+const validateProject = config.projectValidtaion.map(rule => {
+    switch (rule.field) {
+        case 'title':
+            return check(rule.field)
+                .not()
+                .isEmpty()
+                .withMessage(rule.errorMessage)
+        case 'isFeature':
+            return check(rule.field)
+                .isBoolean()
+                .withMessage(rule.errorMessage)
+        case 'productImage':
+            return check(rule.field)
+                .not()
+                .isEmpty()
+                .withMessage(rule.errorMessage)
+        case 'price':
+            return check(rule.field)
+                .isDecimal()
+                .withMessage(rule.errorMessage)
+        case 'shortDescription':
+            return check(rule.field)
+                .isLength({ max: 200 })
+                .withMessage(rule.errorMessage)
+        case 'productUrl':
+            return check(rule.field)
+                .not()
+                .isEmpty()
+                .withMessage(rule.errorMessage)
+        default:
+            return null;
+    }
+}).filter(Boolean); 
 const AuthRegisterValidation = (req, res, next) => {
-    console.log("90000000000000000",req.body)
+    console.log("90000000000000000", req.body)
     return validate(validateAuthRegister)(req, res, next);
 };
 const AuthLoginValidation = (req, res, next) => {
-    console.log("90000000000000000",req.body)
+    console.log("90000000000000000", req.body)
     return validate(validateAuthLogin)(req, res, next);
 };
 
-module.exports = { AuthRegisterValidation ,AuthLoginValidation};
+const projectValidtaion = (req, res, next) => {
+    return validate(validateProject)(req, res, next);
+}
+
+module.exports = { AuthRegisterValidation, AuthLoginValidation, projectValidtaion };

@@ -10,7 +10,6 @@ const sendResponse = async(res,statusCode,success,message,data=null,errors=null)
     if(errors !==null) response.erros = errors
 
     const apiLog = {
-       
         api_name: res.req.originalUrl,
         api_request: JSON.stringify(res.req.body),
         status: statusCode,
@@ -18,13 +17,10 @@ const sendResponse = async(res,statusCode,success,message,data=null,errors=null)
         message:message,
         response: JSON.stringify(response),
         timestamp: new Date(),
-       
-    
-        
     }
     await aplilogs.create(apiLog)
 
-console.log("resp*****************",res.req.originalUrl)
+// console.log("resp*****************",res)
     res.status(statusCode).json(response)
 }
 module.exports = {sendResponse};
